@@ -1,0 +1,580 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#fff1f3">
+
+  <title>For My Favorite Boy ♡</title>
+
+  <!-- Google Fonts: Lora + Noto Serif Thai -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400..700;1,400..700&family=Noto+Serif+Thai:wght@400;600&display=swap" rel="stylesheet">
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      padding: 24px 14px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-family: "Lora", "Noto Serif Thai", serif;
+      color: #172b4d;
+      overflow-x: hidden;
+      background: linear-gradient(135deg, #fff1f3 0%, #eef6fd 100%);
+      background-size: 200% 200%;
+      animation: bgShift 12s ease-in-out infinite;
+    }
+
+    /* พื้นหลังตกแต่ง */
+    .decoration {
+      position: fixed;
+      font-size: 30px;
+      opacity: 0.5;
+      pointer-events: none;
+      animation: float 4s ease-in-out infinite;
+    }
+
+    .decoration.one {
+      top: 10%;
+      left: 8%;
+      color: #ff6b75;
+    }
+
+    .decoration.two {
+      bottom: 12%;
+      right: 8%;
+      color: #8ccfff;
+      animation-delay: 1s;
+    }
+
+    /* กรอบการ์ด */
+    .book {
+      width: 100%;
+      max-width: 510px;
+      min-height: 560px;
+      background: #fffdf8;
+      border-radius: 8px;
+      position: relative;
+      z-index: 1;
+      overflow: hidden;
+    }
+
+    .content {
+      padding: 35px 28px 25px;
+      min-height: 440px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+    }
+
+    /* ทุกอย่างในหน้าค่อย ๆ เด้งขึ้นมาทีละชิ้น */
+    .content > * {
+      animation: rise 0.7s cubic-bezier(.2, .8, .3, 1) both;
+    }
+    .content > *:nth-child(1) { animation-delay: 0.00s; }
+    .content > *:nth-child(2) { animation-delay: 0.08s; }
+    .content > *:nth-child(3) { animation-delay: 0.16s; }
+    .content > *:nth-child(4) { animation-delay: 0.24s; }
+    .content > *:nth-child(5) { animation-delay: 0.32s; }
+    .content > *:nth-child(6) { animation-delay: 0.40s; }
+    .content > *:nth-child(7) { animation-delay: 0.48s; }
+    .content > *:nth-child(8) { animation-delay: 0.56s; }
+    .content > *:nth-child(9) { animation-delay: 0.64s; }
+
+    .small-title {
+      color: #d94f60;
+      font-family: sans-serif;
+      font-size: 11px;
+      letter-spacing: 3px;
+      margin-bottom: 20px;
+    }
+
+    h1 {
+      font-size: clamp(34px, 8vw, 48px);
+      line-height: 1.2;
+      margin: 0;
+      color: #243d67;
+      font-family: "Lora", serif;
+    }
+
+    h2 {
+      font-size: 29px;
+      color: #d94f60;
+      margin: 12px 0;
+      font-family: "Lora", serif;
+    }
+
+    .heart {
+      font-size: 65px;
+      margin: 18px 0;
+      cursor: pointer;
+      user-select: none;
+      animation: beat 1.4s infinite;
+    }
+
+    /* GIF ที่ใช้แทนหัวใจกลางหน้า */
+    .heart.has-gif {
+      font-size: inherit;
+      animation: none;
+      margin: 14px 0;
+    }
+
+    .heart-gif {
+      display: block;
+      max-width: 100%;
+      max-height: 150px;
+      border-radius: 12px;
+    }
+
+    .subtitle {
+      font-size: 15px;
+      color: #61718b;
+      line-height: 1.9;
+      margin: 15px 0 24px;
+    }
+
+    .message {
+      width: 100%;
+      background: #f0f5fb;
+      border-left: 3px solid #d94f60;
+      padding: 20px 18px;
+      text-align: left;
+      font-size: 16px;
+      line-height: 2;
+      color: #243d67;
+      white-space: pre-line;
+    }
+
+    /* เคอร์เซอร์กระพริบตอนพิมพ์ข้อความ */
+    .message.typing::after {
+      content: "♡";
+      color: #d94f60;
+      margin-left: 2px;
+      animation: blink 0.7s steps(2) infinite;
+    }
+
+    .message strong {
+      color: #d94f60;
+    }
+
+    /* ช่องใส่ GIF (จะโชว์ก็ต่อเมื่อใส่ไฟล์ gif ใน pages) */
+    .gif {
+      max-width: 100%;
+      max-height: 170px;
+      border-radius: 10px;
+      margin: 4px 0 8px;
+    }
+
+    /* สติ๊กเกอร์น่ารัก มุมขวาบนของการ์ด */
+    .sticker {
+      position: absolute;
+      top: 14px;
+      right: 18px;
+      font-size: 36px;
+      transform-origin: 70% 80%;
+      animation: wiggle 2.2s ease-in-out infinite;
+      user-select: none;
+      pointer-events: none;
+    }
+
+    .signature {
+      margin-top: 22px;
+      color: #d94f60;
+      font-style: italic;
+      font-size: 18px;
+    }
+
+    /* ปุ่มเปลี่ยนหน้า */
+    .navigation {
+      display: flex;
+      gap: 10px;
+      width: 100%;
+      margin-top: 25px;
+    }
+
+    button {
+      flex: 1;
+      border: none;
+      border-radius: 4px;
+      padding: 13px 10px;
+      font-size: 14px;
+      cursor: pointer;
+      transition: 0.2s;
+      font-family: "Lora", "Noto Serif Thai", sans-serif;
+    }
+
+    .next {
+      background: #d94f60;
+      color: white;
+      animation: pulse 2s ease-in-out infinite;
+    }
+
+    .back {
+      background: #e8edf5;
+      color: #243d67;
+    }
+
+    button:hover {
+      transform: translateY(-2px);
+      filter: brightness(1.05);
+    }
+
+    .bottom-note {
+      font-family: sans-serif;
+      font-size: 10px;
+      color: #a0a9b7;
+      letter-spacing: 2px;
+      margin-top: 20px;
+    }
+
+    /* ---------- หัวใจลอยพื้นหลัง / confetti / คลิกแล้วกระจาย ---------- */
+    .fx {
+      position: fixed;
+      pointer-events: none;
+      z-index: 5;
+      user-select: none;
+      line-height: 1;
+    }
+
+    .rising {
+      bottom: -40px;
+      z-index: 0;
+      animation: rising linear forwards;
+    }
+
+    .confetti {
+      top: -40px;
+      animation: fall linear forwards;
+    }
+
+    .burst {
+      transform: translate(-50%, -50%);
+      animation: burst 0.9s ease-out forwards;
+    }
+
+    @keyframes beat {
+      50% {
+        transform: scale(1.12);
+      }
+    }
+
+    @keyframes float {
+      50% {
+        transform: translateY(-12px) rotate(8deg);
+      }
+    }
+
+    @keyframes bgShift {
+      50% {
+        background-position: 100% 100%;
+      }
+    }
+
+    @keyframes rise {
+      from {
+        opacity: 0;
+        transform: translateY(18px) scale(0.96);
+      }
+      to {
+        opacity: 1;
+        transform: none;
+      }
+    }
+
+    @keyframes wiggle {
+      0%, 100% { transform: rotate(-8deg); }
+      50%      { transform: rotate(10deg) translateY(-3px); }
+    }
+
+    @keyframes blink {
+      50% { opacity: 0; }
+    }
+
+    @keyframes pulse {
+      50% { box-shadow: 0 0 0 6px #d94f6030; }
+    }
+
+    @keyframes rising {
+      0%   { transform: translateY(0) translateX(0) rotate(0deg); opacity: 0; }
+      10%  { opacity: var(--op, 0.6); }
+      100% { transform: translateY(-110vh) translateX(var(--drift, 30px)) rotate(var(--spin, 40deg)); opacity: 0; }
+    }
+
+    @keyframes fall {
+      0%   { transform: translateY(0) translateX(0) rotate(0deg); opacity: 1; }
+      100% { transform: translateY(110vh) translateX(var(--drift, 30px)) rotate(var(--spin, 360deg)); opacity: 0.9; }
+    }
+
+    @keyframes burst {
+      0%   { transform: translate(-50%, -50%) scale(0.4); opacity: 1; }
+      100% { transform: translate(calc(-50% + var(--dx)), calc(-50% + var(--dy))) scale(1.2); opacity: 0; }
+    }
+
+    @media (max-width: 480px) {
+      .book {
+        min-height: 0;
+      }
+
+      .content {
+        padding: 32px 20px 24px;
+        min-height: 430px;
+      }
+
+      .message {
+        font-size: 15px;
+      }
+    }
+
+    /* คนที่ปิด animation ในเครื่อง จะไม่โดนลูกเล่นเยอะ */
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="decoration one">♡</div>
+  <div class="decoration two">♥</div>
+
+  <main class="book">
+
+    <section class="content" id="content">
+      <!-- เนื้อหาแต่ละหน้าจะแสดงตรงนี้ -->
+    </section>
+
+  </main>
+
+  <script>
+    // ข้อความของแต่ละหน้า
+    // gif: ใส่ชื่อไฟล์ gif ที่วางไว้โฟลเดอร์เดียวกับไฟล์นี้ เช่น "cute1.gif"
+    //      หรือลิงก์ตรงของ gif (ต้องลงท้าย .gif) ถ้าเว้นว่างไว้ "" จะไม่โชว์
+    const pages = [
+      {
+        label: "SOMETHING JUST FOR YOU",
+        title: "Hii my<br>fav boy",
+        heart: "♡",
+        sticker: "🧸",
+        gif: "",
+        subtitle: "i made a little something for you",
+        signature: "with love, just for you",
+        button: "Open my letter →"
+      },
+
+      {
+        label: "OUR LITTLE",
+        title: "To my favorite boy",
+        heart: "♥",
+        sticker: "💌",
+        gif: "",
+        heartGif: "cute1.gif",
+        subtitle: "there's something i want you to know",
+        message:
+          "พี่ รู้ไรเปล่าา 5 เดือนละนะ \nขอบคุณที่เข้ามาเป็นส่วนหนึ่งในชีวิตเค้านะ ขอบคุณที่อยู่ข้าง ๆ กัน คอยให้กำลังใจเค้าไม่ว่าเรื่องอะไร\n เค้ารักพี่นะ ",
+        signature: "♡",
+        button: "Ruk Pi na",
+        confetti: true
+      }
+    ];
+
+    let currentPage = 0;
+    let typingTimer = null;
+
+    const rand = (min, max) => Math.random() * (max - min) + min;
+
+    // ---------- เอฟเฟกต์ ----------
+
+    // หัวใจลอยขึ้นด้านหลังการ์ดเรื่อย ๆ
+    function spawnRisingHeart() {
+      const el = document.createElement("div");
+      el.className = "fx rising";
+      el.textContent = ["♡", "♥", "💗", "🌸"][Math.floor(rand(0, 4))];
+      el.style.left = rand(2, 96) + "vw";
+      el.style.fontSize = rand(14, 30) + "px";
+      el.style.color = Math.random() > 0.5 ? "#ff8a96" : "#8ccfff";
+      el.style.setProperty("--drift", rand(-60, 60) + "px");
+      el.style.setProperty("--spin", rand(-40, 40) + "deg");
+      el.style.setProperty("--op", rand(0.35, 0.7));
+      const duration = rand(6, 11);
+      el.style.animationDuration = duration + "s";
+      document.body.appendChild(el);
+      setTimeout(() => el.remove(), duration * 1000 + 200);
+    }
+
+    // หัวใจ/ดาวกระจายตรงที่คลิก
+    function burstAt(x, y, count = 7) {
+      for (let i = 0; i < count; i++) {
+        const el = document.createElement("div");
+        el.className = "fx burst";
+        el.textContent = ["♥", "♡", "✨", "💗"][Math.floor(rand(0, 4))];
+        el.style.left = x + "px";
+        el.style.top = y + "px";
+        el.style.fontSize = rand(14, 26) + "px";
+        el.style.color = ["#ff6b75", "#ff9aa5", "#8ccfff"][Math.floor(rand(0, 3))];
+        const angle = rand(0, Math.PI * 2);
+        const dist = rand(40, 90);
+        el.style.setProperty("--dx", Math.cos(angle) * dist + "px");
+        el.style.setProperty("--dy", Math.sin(angle) * dist + "px");
+        document.body.appendChild(el);
+        setTimeout(() => el.remove(), 1000);
+      }
+    }
+
+    // ฝนหัวใจ confetti ตกจากด้านบน
+    function heartRain(count = 36) {
+      for (let i = 0; i < count; i++) {
+        setTimeout(() => {
+          const el = document.createElement("div");
+          el.className = "fx confetti";
+          el.textContent = ["♥", "♡", "💗", "✨", "🌸"][Math.floor(rand(0, 5))];
+          el.style.left = rand(0, 98) + "vw";
+          el.style.fontSize = rand(16, 34) + "px";
+          el.style.color = ["#ff6b75", "#ff9aa5", "#8ccfff", "#ffc2c8"][Math.floor(rand(0, 4))];
+          el.style.setProperty("--drift", rand(-80, 80) + "px");
+          el.style.setProperty("--spin", rand(-360, 360) + "deg");
+          const duration = rand(2.8, 5);
+          el.style.animationDuration = duration + "s";
+          document.body.appendChild(el);
+          setTimeout(() => el.remove(), duration * 1000 + 200);
+        }, i * 70);
+      }
+    }
+
+    // พิมพ์ข้อความทีละตัวอักษร (จองความสูงไว้ก่อน กล่องจะไม่ขยับ)
+    function typeMessage(el, rawText) {
+      const text = rawText
+        .split("\n")
+        .map((line) => line.trim())
+        .join("\n")
+        .trim();
+
+      clearInterval(typingTimer);
+
+      el.textContent = text;
+      el.style.minHeight = el.offsetHeight + "px";
+      el.textContent = "";
+      el.classList.add("typing");
+
+      const chars = Array.from(text);
+      let i = 0;
+
+      typingTimer = setInterval(() => {
+        el.textContent += chars[i++];
+        if (i >= chars.length) {
+          clearInterval(typingTimer);
+          el.classList.remove("typing");
+        }
+      }, 55);
+    }
+
+    // ---------- แสดงหน้า ----------
+
+    function showPage() {
+      const page = pages[currentPage];
+      const content = document.getElementById("content");
+
+      clearInterval(typingTimer);
+
+      content.innerHTML = `
+        <div class="sticker">${page.sticker || ""}</div>
+
+        <div class="small-title">${page.label}</div>
+
+        <h1>${page.title}</h1>
+
+        ${
+          page.heartGif
+            ? `<div class="heart has-gif" title="แตะได้นะ ♡">
+                 <img class="heart-gif" src="${page.heartGif}" alt=""
+                      onerror="this.parentElement.classList.remove('has-gif'); this.replaceWith(document.createTextNode('${page.heart}'))">
+               </div>`
+            : `<div class="heart" title="แตะได้นะ ♡">${page.heart}</div>`
+        }
+
+        <p class="subtitle">${page.subtitle}</p>
+
+        ${
+          page.gif
+            ? `<img class="gif" src="${page.gif}" alt="" onerror="this.remove()">`
+            : ""
+        }
+
+        ${page.message ? `<div class="message"></div>` : ""}
+
+        <div class="signature">${page.signature}</div>
+
+        <div class="navigation">
+          ${
+            currentPage > 0
+              ? `<button class="back" onclick="previousPage()">
+                   ← Back
+                 </button>`
+              : ""
+          }
+
+          <button class="next" onclick="nextPage()">
+            ${page.button}
+          </button>
+        </div>
+
+        <div class="bottom-note">MADE WITH LOVE ♡</div>
+      `;
+
+      if (page.message) {
+        typeMessage(content.querySelector(".message"), page.message);
+      }
+
+      if (page.confetti) {
+        setTimeout(() => heartRain(), 300);
+      }
+    }
+
+    function nextPage() {
+      if (currentPage === pages.length - 1) {
+        currentPage = 0;
+      } else {
+        currentPage++;
+      }
+
+      showPage();
+    }
+
+    function previousPage() {
+      if (currentPage > 0) {
+        currentPage--;
+        showPage();
+      }
+    }
+
+    // แตะที่ไหนก็ได้ หัวใจกระจาย / แตะหัวใจใหญ่ได้ฝนหัวใจ
+    document.addEventListener("pointerdown", (e) => {
+      if (e.target.closest(".heart")) {
+        heartRain(18);
+      }
+      burstAt(e.clientX, e.clientY);
+    });
+
+    // หัวใจลอยพื้นหลังเรื่อย ๆ
+    setInterval(spawnRisingHeart, 700);
+    for (let i = 0; i < 5; i++) {
+      setTimeout(spawnRisingHeart, i * 250);
+    }
+
+    // เปิดหน้าแรกเมื่อเข้าเว็บไซต์
+    showPage();
+  </script>
+
+</body>
+</html>
